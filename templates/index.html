@@ -17,13 +17,15 @@
             <tr>
               <th>#</th>
               <th>Value</th>
+              <th>Fizz?</th>
             </tr>
           </thead>
           <tbody>
             {% for user in users %}
             <tr>
-              <td>{{ loop.index + (page - 1) * per_page }}</td>
-              <td>{{ user }}</td>
+              <td>{{ user.id }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.fb }}</td>
             </tr>
             {% endfor %}
           </tbody>
