@@ -6,13 +6,13 @@ from flask_pymongo import PyMongo
 
 
 app = Flask(__name__)
-###app.config["MONGO_DBNAME"] = 'test_collection'
+app.config["MONGO_DBNAME"] = 'testerMongo'
 
-###app.config["MONGO_URI"] = os.getenv('MONGO_URI', 'mongodb://localhost')
+##app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
 
-### app.config["MONGO_URI"] = os.getenv('MONGO_URI', 'mongodb://localhost')
+app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
 
-###mongo = PyMongo(app)
+mongo = PyMongo(app)
 
 app.templates = ""
 
@@ -31,6 +31,10 @@ for x in range(1,101):
 
 def get_users(offset=0, per_page=10):
     return users[offset: offset + per_page]
+
+def get_tests(offset=0, per_page=10):
+    thetests = mongo.db.mongoTestingDataBase.find()
+    return thetests[offset: offset + per_page]
 
 
 
@@ -55,22 +59,21 @@ def addTest():
 
 @app.route('/inserttest', methods=['POST'])
 def insert_test():
-    test = mongo.db.test
+    test = mongo.db.mongoTestingDataBase
     test.insert_one(request.form.to_dict())
     return redirect(url_for('index'))
 
 
 @app.route('/here')
 def showTests():
-
     page, per_page, offset = get_page_args(page_parameter='page',
                                            per_page_parameter='per_page')
     total = 2
-    pagination_users = get_tests(offset=offset, per_page=per_page)
+    paginatedTests = get_tests(offset=offset, per_page=per_page)
     pagination = Pagination(page=page, per_page=per_page, total=total,
                             css_framework='bootstrap4')
-    return render_template('index.html',
-                           users=pagination_users,
+    return render_template('thetests.html',
+                           tests=paginatedTests,
                            page=page,
                            per_page=per_page,
                            pagination=pagination,
