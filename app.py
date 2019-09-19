@@ -68,7 +68,7 @@ def insert_test():
 def showTests():
     page, per_page, offset = get_page_args(page_parameter='page',
                                            per_page_parameter='per_page')
-    total = 2
+    total = mongo.db.mongoTestingDataBase.count()
     paginatedTests = get_tests(offset=offset, per_page=per_page)
     pagination = Pagination(page=page, per_page=per_page, total=total,
                             css_framework='bootstrap4')
