@@ -8,6 +8,7 @@ from flask_pymongo import PyMongo
 app = Flask(__name__)
 app.config["MONGO_DBNAME"] = 'testerMongo'
 app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
+app.secret_key = 'some_secret'
 
 mongo = PyMongo(app)
 
