@@ -36,7 +36,9 @@ def addTest():
 @app.route('/inserttest', methods=['POST'])
 def insert_test():
     test = mongo.db.mongoTestingDataBase
-    test.insert_one(request.form.to_dict())
+    giggle=test.insert(request.form.to_dict())
+    print(giggle)
+    print(test.find({'_id':giggle}))
     return redirect(url_for('index'))
 
 
