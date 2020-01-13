@@ -69,6 +69,7 @@ def search():
 
 def get_tests(offset=0, per_page=10):
     thetests = mongo.db.mongoTestingDataBase.find()
+    print("herl")
     return thetests[offset: offset + per_page]
 
 @app.route('/here')
