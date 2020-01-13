@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <H1>Mongo 01</H1>
+    <p>First off lets get your Mongo URI</p>
+    <p>Click on Clusters - My database is called "testerMongo", yours may be different.  Then Click Connect.</p>
+    
+    <img src="../static/img/gettingtoconnect.JPG" alt="this">
+
+    <p>You will then be given options on how you want to connect.  Select the option "Connect Your Applications". <br>
+    The comment for this should be "Get a connection string and view driver connection examples". <br>
+    You will be greeted by this pop up.  Select your Language (Python) and then a Python Version (3.6) and you will be given a connection String.
+    </p>
+
+    <img src="../static/img/mongouri1.JPG" alt="this">
+
+    <p>mongodb+srv://<username>:<password>@testermongo-iskss.mongodb.net/test?retryWrites=true&w=majority</p>
+
+
+    <p><a href="{{ url_for('lessons', lesson='mongo.2')}}">Next Lesson</a></p>
+
+
+</body>
+</html>

@@ -12,6 +12,8 @@
     <h1>Welcome to my Flask Pagination Example Using MONGO!!!</h1>
     <p>Want to see how it looks? <a href="{{ url_for('showTests') }}">View Now</a></p>
     <p>Want to add a new Task? <a href="{{ url_for('addTest') }}">Add Now</a></p>
-
+    <form action="{{ url_for('search') }}" method="get">
+        <input id="q" name="q" type="text">
+    </form>
   </body>
 </html>
