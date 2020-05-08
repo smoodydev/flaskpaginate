@@ -11,10 +11,7 @@ app = Flask(__name__)
 
 app.config["MONGO_DBNAME"] = os.environ.get('DATABASE')
 
-if os.path.exists("env.py"):
-    app.config["MONGO_URI"] = env.mongo_uri
-else:
-    app.config["MONGO_URI"] = os.environ.get('MONGO_URI')
+app.config["MONGO_URI"] = 'mongodb+srv://steph:zNN9ORS9qxAHZr4T@testermongo-iskss.mongodb.net/test?retryWrites=true&w=majority'
 
 
 app.secret_key = 'some_secret'
@@ -67,17 +64,21 @@ def search():
     return render_template("search.html", results=results)
 
 
-def get_tests(offset=0, per_page=10):
-    thetests = mongo.db.mongoTestingDataBase.find()
-    print("herl")
-    return thetests[offset: offset + per_page]
-
 @app.route('/here')
 def showTests():
-    page, per_page, offset = get_page_args(page_parameter='page',
-                                           per_page_parameter='per_page')
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
+    # If you are hard coding the number of items per page then uncomment the two lines below
+    # per_page = 12
+    # offset = page * per_page
+
+    # Gets the total values to be used later
     total = mongo.db.mongoTestingDataBase.find().count()
-    paginatedTests = get_tests(offset=offset, per_page=per_page)
+
+    # Gets all the values
+    thetests = mongo.db.mongoTestingDataBase.find()
+    # Paginates the values
+    paginatedTests = thetests[offset: offset + per_page]
+
     pagination = Pagination(page=page, per_page=per_page, total=total,
                             css_framework='bootstrap4')
     return render_template('thetests.html',
@@ -92,5 +93,5 @@ def showTests():
 # The correct running of you app file :)  In terms of Environmental Variables on Heroku.   0.0.0.0  Is the IP and 5000 for Port
 if __name__ == '__main__':
     app.run(host=os.environ.get('IP'),
-            port=int(os.environ.get('PORT')),
+            port=int(os.environ.get('PORT', 8000)),
             debug=True)
