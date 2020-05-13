@@ -39,6 +39,26 @@ def index():
 def addTest():
     return render_template('addtask.html')
 
+@app.route('/add_multi', methods=["GET", 'POST'])
+def addMulti():
+    ingredients = []
+    if request.method =="POST":
+        found = True
+        counter = 0
+        while found:
+            if request.form.get("ingredient"+str(counter)):
+                print("Found")
+                ingredients.append(request.form.get("ingredient"+str(counter)))
+                counter = counter+1
+            else:
+                print("not found")
+                found = False
+        print(ingredients)
+    return render_template('inputer.html', ingredients=ingredients)
+
+
+
+
 
 # This is a POST method and comes from posting a form. In this example We are adding a new entry to our database once a form is submitted.
 # Once we add the value, I am running a print test to show the value returned :)  Then I use a redirect to return to the homepage
