@@ -3,20 +3,21 @@ from flask import Flask, render_template, redirect, url_for, request
 from flask_paginate import Pagination, get_page_args
 from bson.objectid import ObjectId
 from flask_pymongo import PyMongo
+import math
 
 if os.path.exists("env.py"):
     import env
 
 app = Flask(__name__)
 
-app.config["MONGO_DBNAME"] = os.environ.get('DATABASE')
+# app.config["MONGO_DBNAME"] = os.environ.get('DATABASE')
 
-app.config["MONGO_URI"] = 'mongodb+srv://steph:zNN9ORS9qxAHZr4T@testermongo-iskss.mongodb.net/test?retryWrites=true&w=majority'
+# app.config["MONGO_URI"] = 'mongodb+srv://steph:zNN9ORS9qxAHZr4T@testermongo-iskss.mongodb.net/test?retryWrites=true&w=majority'
 
 
 app.secret_key = 'some_secret'
 
-mongo = PyMongo(app)
+# mongo = PyMongo(app)
 
 app.templates = ""
 
@@ -84,7 +85,7 @@ def search():
     return render_template("search.html", results=results)
 
 
-@app.route('/here')
+@app.route('/flask-paginate')
 def showTests():
     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
     # If you are hard coding the number of items per page then uncomment the two lines below
@@ -107,6 +108,47 @@ def showTests():
                            per_page=per_page,
                            pagination=pagination,
                            )
+
+
+@app.route('/python-paginate')
+def python_pagination():
+    page = int(request.args.get("page", 1))
+    per_page = int(request.args.get("per_page", 10))
+    offset = (page-1) * per_page
+    objs = list(range(10))
+    
+    text_back = f"Showing page {page}.  Which is object index {offset} to {offset + per_page}"
+    results = objs[offset:offset+per_page]
+
+    # Step 2
+    pages = list(range(1, math.floor(len(objs)/per_page)+1))
+
+    # Step 3
+    out = dict(request.args)
+    out.pop("page")
+
+    return render_template("python-paginate.html", results=results, pages=pages, per_page=per_page, out=out)
+
+
+
+"""
+Inserting Images and retrieving them from Mongo
+"""
+
+# Inserting and image
+@app.route("/inserttest-image", methods=["POST"])
+def insert_test_image():
+    test = mongo.db.mongoTestingDataBase
+    the_image = request.files["screenshot"]
+    mongo.save_file(the_image.filename, the_image)
+    inserted_value=test.insert({"testfield": request.form.get("testfield"), "testname": request.form.get("testname"), "image": the_image.filename })
+    return redirect(url_for('index'))
+
+
+# In order to retrieve the Image BACK from Mongo
+@app.route("/file/<filename>")
+def file(filename):
+    return mongo.send_file(filename)
 
 
 
