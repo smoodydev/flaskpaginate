@@ -151,10 +151,23 @@ def file(filename):
     return mongo.send_file(filename)
 
 
+
+###                AJAX BELOW
+
+"""
+    AJAX examples below first is the route to the example page.
+        The others are for basic get and post methods.
+
+    All they intend to do is simple requests which will have promises 
+        get console logged and the values sent through printed
+"""
+
 @app.route("/sending_page/somethingelse/123")
 def testing_ajax():
     return render_template("sending.html")
 
+
+# AJAX EXAMPLES
 @app.route("/get-ajax")
 def retrieve_get_ajax():
     print(request.args.get('user'))
@@ -167,6 +180,7 @@ def retrieve_get_ajax():
 @app.route("/post-ajax", methods=["POST"])
 def retrieve_post_ajax():
     name = request.form["name"]
+    print(name)
     return {"hello": name*3}
 
 

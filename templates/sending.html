@@ -7,15 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script type=text/javascript>
+    // SCRIPT_ROOT at the top of the page
     $SCRIPT_ROOT = {{ request.script_root|tojson }};
 
-    $.getJSON($SCRIPT_ROOT + '/get-ajax', {
-        "user": "Stephen"
-    }, function(data)    {
-        console.log("Something Happens");
-        console.log(data);
-    });
+    
 
     
 
@@ -28,14 +25,25 @@
     <button id="postAjax">Click me</button>
 
     <script>
+        //  getJSON will attempt to retrieve JSON only and will be the most useful get request method for students IMO
+        // The standard .get should return more data types but for simplicity lets deal in JSON
+        $.getJSON($SCRIPT_ROOT + '/get-ajax', {
+            "user": "Stephen"
+        }, function (data) {
+            console.log("Something Happens");
+            console.log(data);
+        });
+
+        // The post is pretty much the same.  Do note that the click function is just for an example.  It is not required...
 
         $("#postAjax").click(function () {
-            $.post($SCRIPT_ROOT + "/post-ajax",
-            {
+            // This is the actual POST method 
+            $.post($SCRIPT_ROOT + "/post-ajax", {
                 name: "Stephen"
             }, (data) => {
                 console.log(data);
             })
+            // Post method complete
         });
     </script>
 </body>
