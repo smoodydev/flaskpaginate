@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson }};
+
+    $.getJSON($SCRIPT_ROOT + '/get-ajax', {
+        "user": "Stephen"
+    }, function(data)    {
+        console.log("Something Happens");
+        console.log(data);
+    });
+
+    
+
+    </script>
+
+</head>
+
+<body>
+
+    <button id="postAjax">Click me</button>
+
+    <script>
+
+        $("#postAjax").click(function () {
+            $.post($SCRIPT_ROOT + "/post-ajax",
+            {
+                name: "Stephen"
+            }, (data) => {
+                console.log(data);
+            })
+        });
+    </script>
+</body>
+
+
+</html>

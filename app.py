@@ -151,6 +151,24 @@ def file(filename):
     return mongo.send_file(filename)
 
 
+@app.route("/sending_page/somethingelse/123")
+def testing_ajax():
+    return render_template("sending.html")
+
+@app.route("/get-ajax")
+def retrieve_get_ajax():
+    print(request.args.get('user'))
+    value = "no user given"
+    if request.args.get("user"):
+        x = request.args.get('user')[0]
+        value = f"The first letter is {x}"
+    return {"firstletter": value}
+
+@app.route("/post-ajax", methods=["POST"])
+def retrieve_post_ajax():
+    name = request.form["name"]
+    return {"hello": name*3}
+
 
 # The correct running of you app file :)  In terms of Environmental Variables on Heroku.   0.0.0.0  Is the IP and 5000 for Port
 if __name__ == '__main__':
