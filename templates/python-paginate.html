@@ -8,16 +8,33 @@
 </head>
 
 <body>
-    {% for o, u in out.items() %}
-    
-    {% endfor %}
-    <p>
-        {{ results }}
-    </p>
-    {% for p in pages %}
-    <a href="/python-paginate?page={{p}}{% for o, u in out.items() %}&{{ o }}={{ u }}{% endfor %}">{{ p }}</a>
-    {% endfor %}
+    <div style="display: none">
+        {% for o, u in out.items() %}
 
+        {% endfor %}
+        <p>
+            {{ results }}
+        </p>
+        {% for p in pages %}
+        <a href="/python-paginate?page={{p}}{% for o, u in out.items() %}&{{ o }}={{ u }}{% endfor %}">{{ p }}</a>
+        {% endfor %}
+
+    </div>
+
+    <div>
+        <div class="results">
+            {% for result in something.results %}
+            {{ result }}
+            {% endfor %}
+        </div>
+        <div class="links">
+            {% for pages in something.pages %}
+            <a
+                href="/python-paginate?page={{pages}}{% for o, u in something.args.items() %}&{{ o }}={{ u }}{% endfor %}">{{pages}}</a>
+
+            {% endfor %}
+        </div>
+    </div>
 </body>
 
 </html>

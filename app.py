@@ -4,7 +4,7 @@ from flask_paginate import Pagination, get_page_args
 from bson.objectid import ObjectId
 from flask_pymongo import PyMongo
 import math
-
+from aaa import paginated_hero
 if os.path.exists("env.py"):
     import env
 
@@ -112,22 +112,29 @@ def showTests():
 
 @app.route('/python-paginate')
 def python_pagination():
-    page = int(request.args.get("page", 1))
+    
+    try:
+        page = int(request.args.get("page", 1))
+    except:
+        page=1
     per_page = int(request.args.get("per_page", 10))
     offset = (page-1) * per_page
-    objs = list(range(10))
+    objs = list(range(103))
+
+    aaa = paginated_hero(objs, request.args)
     
     text_back = f"Showing page {page}.  Which is object index {offset} to {offset + per_page}"
     results = objs[offset:offset+per_page]
 
     # Step 2
-    pages = list(range(1, math.floor(len(objs)/per_page)+1))
+    pages = list(range(1, math.ceil(len(objs)/per_page)+1))
 
     # Step 3
     out = dict(request.args)
-    out.pop("page")
+    if "page" in out:
+        out.pop("page")
 
-    return render_template("python-paginate.html", results=results, pages=pages, per_page=per_page, out=out)
+    return render_template("python-paginate.html", something=aaa, results=results, pages=pages, per_page=per_page, out=out)
 
 
 
